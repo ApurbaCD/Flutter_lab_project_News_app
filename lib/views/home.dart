@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:news_appllication/helper/data.dart';
+import 'package:news_appllication/helper/news.dart';
+import 'package:news_appllication/models/article_model.dart';
 import 'package:news_appllication/models/category_model.dart';
 
 class Home extends StatefulWidget {
@@ -12,12 +14,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<CategoryModel> categories =[];
+  //List<CategoryModel> categories = new List<CategoryModel>();
+  List<CategoryModel> categories = [];
+  //List<ArticleModel> article = new List<ArticleModel>( );
+  List<ArticleModel> articles = [];
+  bool _loading=false;
+
+
   void initState(){
     // TODO: implement initState
     super.initState();
     categories = getCategories();
+    getNews();
   }
+
+  getNews()async{
+    News newsClass = News();
+    await newsClass.getNews();
+    articles = newsClass.news;
+    setState((){
+      _loading=true;
+      print('Done');
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
      return Scaffold(
@@ -33,10 +53,15 @@ class _HomeState extends State<Home> {
         ),
         elevation: 0.0,
       ),
-      body: Container(
+      body: _loading ? Center(
+        child: Container(
+          child: CircularProgressIndicator(),
+        ),
+      ) :Container(
         child: Column(
           children: <Widget>[
             //or can use Expanded
+            /// Categories
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 width: double.infinity,//Extra 
@@ -52,6 +77,21 @@ class _HomeState extends State<Home> {
                       categoryName: categories[index].categoryName,
                     );
                   })
+              ),
+
+              //Blogs
+              
+              Container(
+                child: ListView.builder(
+                  itemCount: articles.length,
+                  shrinkWrap: true,
+                  itemBuilder:(context,index){
+                    return BlogTile(
+                      imageUrl: articles[index].urlToImage,
+                       title: articles[index].title, 
+                       desc: articles[index].description,
+                       );
+                  }),
               )
           ],
         ),

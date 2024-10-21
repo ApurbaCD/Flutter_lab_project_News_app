@@ -8,26 +8,32 @@ class News  {
     List<ArticleModel> news=[];
 
     Future<void> getNews() async{
-    String url = "https://newsapi.org/v2/everything?q=tesla&from=2024-09-20&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
+    String url = "https://newsapi.org/v2/everything?q=tesla&from=2024-09-21&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //var response = await http.get(url) 
     // http.get(someString) repalace with  http.get(Uri.parse(someString))
     var response = await http.get(Uri.parse(url));
+    //var response = await http.get(url);
 
     var jsonData = jsonDecode(response.body);
 
     if(jsonData['status']=="ok"){
-        jsonData["article"].forEach((element){
-            if(element["urlToimage"]!=null&& element['description'!=null]){
+        jsonData["articles"].forEach((element){
+            if(element["urlToImage"]!=null&& element['description']!=null){
 
                 ArticleModel articleModel = ArticleModel(
                     title: element["title"],
-                    auther: element["auther"],
+                    //if(element["author"]!="null"){
+                      //author:element["author"];
+                    //}
+                    author: element["author"],
                     description: element["description"],
                     url: element["url"],
-                    urlToimage: element["urlToimage"],
-                    publishedAt: element['publishedAt'],
+                    urlToImage: element["urlToImage"],
+                    //publishedAt: element['publishedAt'],
                     content: element["content"],
                 );
+
+                news.add(articleModel);
             }
         });
     }

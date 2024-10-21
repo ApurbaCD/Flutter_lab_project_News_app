@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_appllication/views/home.dart';
    
-void main() {
+     void main() {
   runApp(const MyApp());
 }
 

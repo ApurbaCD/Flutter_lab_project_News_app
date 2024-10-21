@@ -18,14 +18,16 @@
 
 class ArticleModel{
   //late used because  "Non-nullable instance field 'auther' must be initialized."
-    String auther;
-    String title;
-    String description;
-    String url;
-    String urlToimage;
-    String content;
-    DateTime publishedAt;
+    String author;
+    String title="";
+    String description="";
+    String url="";
+    String urlToImage="";
+    String content="";
+    //DateTime publishedAt;
     
     //required extra used
-    ArticleModel({required this.auther,required this.content,required this.description,required this.url,required this.urlToimage,required this.title,required this.publishedAt});
+    //ArticleModel({required this.auther,required this.content,required this.description,required this.url,required this.urlToimage,required this.title,required this.publishedAt});
+    ArticleModel({required this.author,required this.content,required this.description,required this.url,required this.urlToImage,required this.title});
+
 }
