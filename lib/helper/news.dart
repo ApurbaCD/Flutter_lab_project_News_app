@@ -16,15 +16,19 @@ class News  {
 
     var jsonData = jsonDecode(response.body);
 
-    if(jsonData['status']=="ok"){
+    if(jsonData["status"]=="ok"){
+      print("decode");
         jsonData["articles"].forEach((element){
-            if(element["urlToImage"]!=null&& element['description']!=null){
+          // print(element['title']);
+          // print(element['author']);
+          // print(element['description']);
+          // print(element['url']);
+          // print(element['urlToImage']);
+          // print(element['content']);
+            if(element["urlToImage"]!=null&& element["description"]!=null&&element["author"]!=null&&element["title"]!=null&&element["url"]!=null&&element["content"]!=null){
 
                 ArticleModel articleModel = ArticleModel(
                     title: element["title"],
-                    //if(element["author"]!="null"){
-                      //author:element["author"];
-                    //}
                     author: element["author"],
                     description: element["description"],
                     url: element["url"],

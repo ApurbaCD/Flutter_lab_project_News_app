@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
   List<CategoryModel> categories = [];
   //List<ArticleModel> article = new List<ArticleModel>( );
   List<ArticleModel> articles = [];
-  bool _loading=false;
+  bool _loading = true;
 
 
   void initState(){
@@ -30,11 +31,11 @@ class _HomeState extends State<Home> {
 
   getNews()async{
     News newsClass = News();
-    await newsClass.getNews();
+     await newsClass.getNews();
     articles = newsClass.news;
-    setState((){
-      _loading=true;
-      print('Done');
+     setState((){
+       _loading=false;
+        print('Done');
     });
   }
   
@@ -57,43 +58,47 @@ class _HomeState extends State<Home> {
         child: Container(
           child: CircularProgressIndicator(),
         ),
-      ) :Container(
-        child: Column(
-          children: <Widget>[
-            //or can use Expanded
-            /// Categories
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,//Extra 
-                height: 70,//Extra
-                child:ListView.builder(
-                  itemCount: categories.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  //shrinkWrap: debugInstrumentationEnabled,
-                  itemBuilder:(context, index){
-                    return CategoryTile(
-                      imageUrl: categories[index].imageUrl,
-                      categoryName: categories[index].categoryName,
-                    );
-                  })
-              ),
-
-              //Blogs
-              
-              Container(
-                child: ListView.builder(
-                  itemCount: articles.length,
-                  shrinkWrap: true,
-                  itemBuilder:(context,index){
-                    return BlogTile(
-                      imageUrl: articles[index].urlToImage,
-                       title: articles[index].title, 
-                       desc: articles[index].description,
-                       );
-                  }),
-              )
-          ],
+      ) :SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: <Widget>[
+              //or can use Expanded
+              /// Categories
+                Container(
+                  width: double.infinity,//Extra 
+                  height: 70,//Extra
+                  child:ListView.builder(
+                    itemCount: categories.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    //shrinkWrap: debugInstrumentationEnabled,
+                    itemBuilder:(context, index){
+                      return CategoryTile(
+                        imageUrl: categories[index].imageUrl,
+                        categoryName: categories[index].categoryName,
+                      );
+                    })
+                ),
+        
+                //Blogs
+                
+                Container(
+                  padding: EdgeInsets.only(top:16),
+                  child: ListView.builder(
+                    itemCount: articles.length,
+                    shrinkWrap: true,
+                    itemBuilder:(context,index){
+                      return BlogTile(
+                        imageUrl: articles[index].urlToImage,
+                         title: articles[index].title, 
+                         desc: articles[index].description,
+                         );
+                    }
+                    ),
+                )
+            ],
+          ),
         ),
       ),
     );
@@ -117,7 +122,8 @@ class CategoryTile extends StatelessWidget {
           children: <Widget >[
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.network(imageUrl,width:120,height:60,fit:BoxFit.cover),
+              child: CachedNetworkImage(
+                imageUrl:imageUrl,width:120,height:60,fit:BoxFit.cover),
               ),
             Container(
               alignment: Alignment.center,
@@ -153,9 +159,29 @@ class BlogTile extends StatelessWidget {
     return Container(
       child: Column(
         children:<Widget>[
-          Image.network(imageUrl),
-          Text(title),
-          Text(desc),
+                Image.network(
+                imageUrl,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(
+                    child: Text(
+                      'Something wrong!',
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                },
+              ),
+          //Image.network(imageUrl),
+          Text(title,
+          style: TextStyle(
+            fontSize: 17,
+            color: Colors.black87,
+          ),
+          ),
+          Text(desc,
+          style: TextStyle(
+            color: Colors.black26,
+          ),
+          ),
         ],
       ),
     );

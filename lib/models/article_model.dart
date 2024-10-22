@@ -19,11 +19,11 @@
 class ArticleModel{
   //late used because  "Non-nullable instance field 'auther' must be initialized."
     String author;
-    String title="";
-    String description="";
-    String url="";
-    String urlToImage="";
-    String content="";
+    String title;
+    String description;
+    String url;
+    String urlToImage;
+    String content;
     //DateTime publishedAt;
     
     //required extra used
