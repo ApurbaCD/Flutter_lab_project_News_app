@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:news_appllication/helper/data.dart';
 import 'package:news_appllication/helper/news.dart';
 import 'package:news_appllication/models/article_model.dart';
@@ -88,6 +89,7 @@ class _HomeState extends State<Home> {
                   child: ListView.builder(
                     itemCount: articles.length,
                     shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemBuilder:(context,index){
                       return BlogTile(
                         imageUrl: articles[index].urlToImage,
@@ -159,24 +161,41 @@ class BlogTile extends StatelessWidget {
     return Container(
       child: Column(
         children:<Widget>[
-                Image.network(
-                imageUrl,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Text(
-                      'Something wrong!',
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
-              ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.network(
+                  imageUrl,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Text(
+                        'Something wrong!',
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  },
+                  ),
+                ),
           //Image.network(imageUrl),
+          //  Image.network(
+          //         imageUrl,
+          //         errorBuilder: (context, error, stackTrace) {
+          //           return const Center(
+          //             child: Text(
+          //               'Something wrong!',
+          //               textAlign: TextAlign.center,
+          //             ),
+          //           );
+          //         },
+          //         ),
+          SizedBox(height:8,),
           Text(title,
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 19,
             color: Colors.black87,
+            fontWeight: FontWeight.w500,
           ),
           ),
+          SizedBox(height:8,),
           Text(desc,
           style: TextStyle(
             color: Colors.black26,

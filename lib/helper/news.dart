@@ -8,7 +8,8 @@ class News  {
     List<ArticleModel> news=[];
 
     Future<void> getNews() async{
-    String url = "https://newsapi.org/v2/everything?q=tesla&from=2024-09-21&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
+    // String url = "https://newsapi.org/v2/everything?q=tesla&from=2024-09-21&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
+    String url ="https://newsapi.org/v2/everything?q=tesla&from=2024-09-24&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //var response = await http.get(url) 
     // http.get(someString) repalace with  http.get(Uri.parse(someString))
     var response = await http.get(Uri.parse(url));
@@ -19,12 +20,12 @@ class News  {
     if(jsonData["status"]=="ok"){
       print("decode");
         jsonData["articles"].forEach((element){
-          // print(element['title']);
-          // print(element['author']);
-          // print(element['description']);
-          // print(element['url']);
-          // print(element['urlToImage']);
-          // print(element['content']);
+          print(element['title']);
+          print(element['author']);
+          print(element['description']);
+          print(element['url']);
+          print(element['urlToImage']);
+          print(element['content']);
             if(element["urlToImage"]!=null&& element["description"]!=null&&element["author"]!=null&&element["title"]!=null&&element["url"]!=null&&element["content"]!=null){
 
                 ArticleModel articleModel = ArticleModel(
