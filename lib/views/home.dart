@@ -7,6 +7,8 @@ import 'package:news_appllication/helper/data.dart';
 import 'package:news_appllication/helper/news.dart';
 import 'package:news_appllication/models/article_model.dart';
 import 'package:news_appllication/models/category_model.dart';
+import 'package:news_appllication/views/article.dart';
+import 'package:news_appllication/views/category.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -53,6 +55,7 @@ class _HomeState extends State<Home> {
             Text('App'),
           ],
         ),
+        centerTitle: true,
         elevation: 0.0,
       ),
       body: _loading ? Center(
@@ -95,6 +98,7 @@ class _HomeState extends State<Home> {
                         imageUrl: articles[index].urlToImage,
                          title: articles[index].title, 
                          desc: articles[index].description,
+                         url: articles[index].url,
                          );
                     }
                     ),
@@ -110,13 +114,17 @@ class _HomeState extends State<Home> {
 
 class CategoryTile extends StatelessWidget {
   // const CategoryTile({super.key});
-  final imageUrl,categoryName;
-  CategoryTile({this.imageUrl,this.categoryName});
+  final String imageUrl,categoryName;
+  CategoryTile({required this.imageUrl,required this.categoryName});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap:(){
-
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>CategoryNews(
+            category: categoryName.toLowerCase(),
+            )
+        ));
       },
       child: Container(
         margin: EdgeInsets.only(right: 16),
@@ -151,57 +159,66 @@ class CategoryTile extends StatelessWidget {
 
 class BlogTile extends StatelessWidget {
   
-  final String imageUrl,title,desc;
+  final String imageUrl,title,desc,url;
   //BlogTile({@required this.imageUrl,@required this.title,@required this.desc});
   //With null safety, use the 'required' keyword, not the '@required' annotation.
   //Try removing the '@'
-  BlogTile({required this.imageUrl,required this.title,required this.desc});
+  BlogTile({required this.imageUrl,required this.title,required this.desc,required this.url});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children:<Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.network(
-                  imageUrl,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Text(
-                        'Something wrong!',
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  },
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>ArticleView(
+            blogUrl: url,
+            )
+          ));
+      },
+      child: Container(
+        child: Column(
+          children:<Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.network(
+                    imageUrl,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Text(
+                          'Error in loading image!',
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                    ),
                   ),
-                ),
-          //Image.network(imageUrl),
-          //  Image.network(
-          //         imageUrl,
-          //         errorBuilder: (context, error, stackTrace) {
-          //           return const Center(
-          //             child: Text(
-          //               'Something wrong!',
-          //               textAlign: TextAlign.center,
-          //             ),
-          //           );
-          //         },
-          //         ),
-          SizedBox(height:8,),
-          Text(title,
-          style: TextStyle(
-            fontSize: 19,
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
-          ),
-          ),
-          SizedBox(height:8,),
-          Text(desc,
-          style: TextStyle(
-            color: Colors.black26,
-          ),
-          ),
-        ],
+            //Image.network(imageUrl),
+            //  Image.network(
+            //         imageUrl,
+            //         errorBuilder: (context, error, stackTrace) {
+            //           return const Center(
+            //             child: Text(
+            //               'Something wrong!',
+            //               textAlign: TextAlign.center,
+            //             ),
+            //           );
+            //         },
+            //         ),
+            SizedBox(height:8,),
+            Text(title,
+            style: TextStyle(
+              fontSize: 19,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+            ),
+            SizedBox(height:8,),
+            Text(desc,
+            style: TextStyle(
+              color: Colors.black26,
+            ),
+            ),
+          ],
+        ),
       ),
     );
   }
