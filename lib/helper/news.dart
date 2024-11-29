@@ -8,9 +8,14 @@ class News  {
     List<ArticleModel> news=[];
 
     Future<void> getNews() async{
+    var all= DateTime.now();
+    var year=all.year;
+    var date=all.day;
+    var month=all.month;
+    month--;
     // String url = "https://newsapi.org/v2/everything?q=tesla&from=2024-09-21&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //String url = "https://newsapi.org/v2/top-headlines?country=in/sources?country=usapiKey=c93e72ee4f444db7b1a5b56d4c047506";
-    String url ="https://newsapi.org/v2/everything?q=tesla&from=2024-09-25&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
+    String url ="https://newsapi.org/v2/everything?q=tesla&from=$year-$month-$date&sortBy=publishedAt&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //String url="https://newsapi.org/v2/top-headlines?country=bg&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //String url="https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c93e72ee4f444db7b1a5b56d4c047506";
     //var response = await http.get(url) 
